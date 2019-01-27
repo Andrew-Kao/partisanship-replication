@@ -652,7 +652,7 @@ keep year stateicp under15 over65 black pop
 rename stateicp state
 
 save "data/statesum", replace
-}
+
 
 
 
@@ -661,15 +661,12 @@ save "data/statesum", replace
 import delim "raw/census/pop1930-90.txt", clear delim(" ")
 
 drop v9
-
 destring v2 v3 v4 v5 v6 v7 v8, replace ignore(",")
-
 rename v1 state
 
 reshape long v, i(state) j(year)
 
 rename v population
-
 replace year = (year - 8) * (-10) + 1930
 
 ** need to rename two word state names! **
@@ -678,10 +675,25 @@ preserve
 
 * source: https://www2.census.gov/programs-surveys/popest/tables/.../state/.../nst-est2016-01.xls...
 
+import delim "raw/census/nst-est2016-01", clear
+
+destring v2 v3 v4 v5 v6 v7 v8, replace ignore(",")
+rename v1 state
+
+reshape long v, i(state) j(year)
+
+rename v population
+replace year = year + 2008
+
+tempfile modernPop
+save `modernPop'
+
 restore
 
-** merge here, then save
+append using `modernPop'
 
+save "data/statepop", replace
+}
 
 
 
