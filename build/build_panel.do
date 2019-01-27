@@ -6,7 +6,7 @@
 
 global runOld = 0
 
-// cd "/Users/AndrewKao/Documents/College/3rd Yr/Econometrics/partisanship/build/"
+cd "/Users/AndrewKao/Documents/College/3rd Yr/Econometrics/partisanship-replication/build/"
 
 if $runOld == 1{
 /**
@@ -653,6 +653,35 @@ rename stateicp state
 
 save "data/statesum", replace
 }
+
+
+
+* source: https://www.census.gov/population/www/censusdata/PopulationofStatesandCountiesoftheUnitedStates1790-1990.pdf
+
+import delim "raw/census/pop1930-90.txt", clear delim(" ")
+
+drop v9
+
+destring v2 v3 v4 v5 v6 v7 v8, replace ignore(",")
+
+rename v1 state
+
+reshape long v, i(state) j(year)
+
+rename v population
+
+replace year = (year - 8) * (-10) + 1930
+
+** need to rename two word state names! **
+
+preserve
+
+* source: https://www2.census.gov/programs-surveys/popest/tables/.../state/.../nst-est2016-01.xls...
+
+restore
+
+** merge here, then save
+
 
 
 
