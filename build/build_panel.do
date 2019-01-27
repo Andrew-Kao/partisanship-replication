@@ -103,10 +103,16 @@ keep year congressIdeology
 
 save "data/ideology", replace
 
-}
 
 
+/*
 
+	3: state census data
+	from IPUMS
+
+*/
+
+* source: https://usa.ipums.org/
 
 set more off
 
@@ -645,7 +651,8 @@ keep year stateicp under15 over65 black pop
 
 rename stateicp state
 
-
+save "data/statesum", replace
+}
 
 
 
