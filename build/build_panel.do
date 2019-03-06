@@ -654,7 +654,11 @@ rename stateicp state
 save "data/statesum", replace
 
 
+/*
 
+	4: census data
+
+*/
 
 * source: https://www.census.gov/population/www/censusdata/PopulationofStatesandCountiesoftheUnitedStates1790-1990.pdf
 
@@ -674,6 +678,8 @@ replace year = (year - 8) * (-10) + 1930
 preserve
 
 * source: https://www2.census.gov/programs-surveys/popest/tables/.../state/.../nst-est2016-01.xls...
+* https://web.archive.org/web/20141121134738/http://www.census.gov/population/www/documentation/twps0056/tabs15-65.pdf
+* https://www.census.gov/population/www/censusdata/PopulationofStatesandCountiesoftheUnitedStates1790-1990.pdf
 
 import delim "raw/census/nst-est2016-01", clear
 
@@ -696,5 +702,24 @@ save "data/statepop", replace
 }
 
 
+/*
 
+	No data for:
+		- Top income tax
+		- Tax redistributivity
+		
+	Lots of manual cleaning for
+		- Minimum wage: https://www.nber.org/papers/w10656.pdf  (page 31)
+		- EITC supplement: https://eric.ed.gov/?id=ED462465
+		- TANF/AFDC: https://www.acf.hhs.gov/ofa/programs/tanf/data-reports
+		- 
+		
+
+*/
+
+/*
+
+	5: Top income tax rates
+
+*/
 
