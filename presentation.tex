@@ -1,0 +1,149 @@
+\documentclass{beamer}
+
+% *****************************************************************
+% Estout related things
+% *****************************************************************
+\newcommand{\sym}[1]{\rlap{#1}}% Thanks to David Carlisle
+
+\let\estinput=\input% define a new input command so that we can still flatten the document
+
+\newcommand{\estwide}[3]{
+		\vspace{.75ex}{
+			\begin{tabular*}
+			{\textwidth}{@{\hskip\tabcolsep\extracolsep\fill}l*{#2}{#3}}
+			\toprule
+			\estinput{#1}
+			\bottomrule
+			\addlinespace[.75ex]
+			\end{tabular*}
+			}
+		}	
+
+\newcommand{\estauto}[3]{
+		\vspace{.75ex}{
+			\begin{tabular}{l*{#2}{#3}}
+			\toprule
+			\estinput{#1}
+			\bottomrule
+			\addlinespace[.75ex]
+			\end{tabular}
+			}
+		}
+
+% Allow line breaks with \\ in specialcells
+	\newcommand{\specialcell}[2][c]{%
+	\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+% *****************************************************************
+% Custom subcaptions
+% *****************************************************************
+% Note/Source/Text after Tables
+\usepackage{verbatim}
+\newcommand{\figtext}[1]{
+	\vspace{-1.9ex}
+	\captionsetup{justification=justified,font=footnotesize}
+	\caption*{\hspace{6pt}\hangindent=1.5em #1}
+	}
+\newcommand{\fignote}[1]{\figtext{\emph{Note:~}~#1}}
+
+\newcommand{\figsource}[1]{\figtext{\emph{Source:~}~#1}}
+
+% Add significance note with \starnote
+\newcommand{\starnote}{\figtext{* p < 0.1, ** p < 0.05, *** p < 0.01. Standard errors in parentheses.}}
+
+
+
+\usepackage{amsmath,amsthm,amssymb} %Misc math symbols
+\usepackage{mathtools}
+\usepackage[utf8]{inputenc}
+\usepackage{caption} 				%Inserting multiple figures
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{tikz, pgfplots} 			%Drawing pictures
+%\usepackage{fancyhdr} 				%Header style
+%\usepackage{enumitem}				%Enumerating using letters
+%\usepackage{mathrsfs}				%Fonts
+%\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{import}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{pdflscape}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{adjustbox} 
+\usepackage{amsmath} 
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{adjustbox}
+
+
+ 
+\usepackage[utf8]{inputenc}
+ 
+ 
+%Information to be included in the title page:
+\title{Replicating Leigh 2008 - "Estimating the impact of gubernatorial partisanship on policy settings
+and economic outcomes: A regression discontinuity approach" }
+\subtitle{}
+\author{Andrew Kao}
+\institute{University of Chicago}
+\date{Winter 2019}
+ 
+ 
+ 
+\begin{document}
+ 
+\frame{\titlepage}
+ 
+\begin{frame}
+\frametitle{Motivation and Identification}
+
+\begin{itemize}
+\item How ideological are governors in their actions?
+	\begin{itemize}
+	\item Downs model 
+	\item Roemer model
+	\end{itemize} 
+\item Observational panel data
+	\begin{itemize}
+	\item Data from 1941 to 2004
+	\item 30 outcomes for all 50 states
+	\end{itemize}
+\item Regression discontinuity
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Descriptives}
+   
+\scriptsize
+    \renewcommand\arraystretch{0.75}
+    \setlength\tabcolsep{2pt}
+%\resizebox{\linewidth}{!}{
+%\begin{table}[!htbp]
+%\caption{Post Claim Earnings }
+\include{output/tables/summary}
+%\label{table18}
+%{\textbf{Note:}  Observations only include those with non-missing data for all variables. Sample is constrained to control and claimant incentive arms. (* p $<$ .10, ** p $<$ .05, *** p $<$ .01) } 
+%\end{table}
+%}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Regressions}
+
+\scriptsize
+    \renewcommand\arraystretch{0.65}
+    \setlength\tabcolsep{1pt}
+    \tiny
+\include{output/tables/outcome_a}
+\textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
+
+\end{frame}
+
+\end{document}
