@@ -1,13 +1,19 @@
 
+/*
+
+	remember to do abortion regressions
+
+*/
+
 * Cleaning 
 
-global dir = "~/Documents/College/3rd Yr/Econometrics/partisanship-replication/"
+global dir = "~/Documents/College/3rd Yr/Econometrics/partisanship-replication"
 
 clear
 set mem 20m
 set more off
 set matsize 800
-use "$dir/partisanship_for_web", clear
+use "$dir/build/data/final_data.dta", clear
 drop if year==. | year<1925 | stfips>56 | stfips==.
 for num 02 01 05 04 06 08 09 11 10 12 13 15 19 16 17 18 20 21 22 25 24 23 26 27 29 28 30 37 38 31 33 34 35 32 36 39 40 41 42 44 45 46 47 48 49 51 50 53 55 54 56: gen byte yearX=year-1950 if stfips==X \ recode yearX .=0
 
@@ -74,6 +80,7 @@ global policies stax_topr stax_corpr redist atr minwage afdc_max stemploy stempa
 global outcome unionization incrate executions transfers ui afdc_reca stinctax stothertax stnontaxes strevenue
 global welfare1 mean_faminc mean_faminc_pt faminc50 famincpt50 employeecomp poverty_pct gini gini_pt 
 global welfare2 unemploymentrate naep_read pcrime vcrime mrate psuicide  
+global abortion abortions
 
 * subset of outcomes
 global subpolicies  stax_topr stax_corpr atr minwage afdc_max stemploy 
@@ -183,6 +190,9 @@ runreg "welfare1", specification("c")
 runreg "welfare2", specification("a")
 runreg "welfare2", specification("b")
 runreg "welfare2", specification("c")
+runreg "abortion", specification("a")
+runreg "abortion", specification("b")
+runreg "abortion", specification("c")
 
 
 
