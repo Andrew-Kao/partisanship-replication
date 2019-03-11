@@ -73,6 +73,7 @@ label var vcrime "Violent Crimes per 100,000"
 label var mrate "Murder Rate per 100,000"
 label var psuicide "Suicide Rate per 100,000"
 label var ep "Employment Rate"
+label var abortions "Total Abortions in State"
 
 
 * OUTCOMES
@@ -178,18 +179,18 @@ end
 
 
 *** RUN REGRESSIONS ***
-runreg "policies", specification("a")
-runreg "policies", specification("b")
-runreg "policies", specification("c")
-runreg "outcome", specification("a")
-runreg "outcome", specification("b")
-runreg "outcome", specification("c")
-runreg "welfare1", specification("a")
-runreg "welfare1", specification("b")
-runreg "welfare1", specification("c")
-runreg "welfare2", specification("a")
-runreg "welfare2", specification("b")
-runreg "welfare2", specification("c")
+// runreg "policies", specification("a")
+// runreg "policies", specification("b")
+// runreg "policies", specification("c")
+// runreg "outcome", specification("a")
+// runreg "outcome", specification("b")
+// runreg "outcome", specification("c")
+// runreg "welfare1", specification("a")
+// runreg "welfare1", specification("b")
+// runreg "welfare1", specification("c")
+// runreg "welfare2", specification("a")
+// runreg "welfare2", specification("b")
+// runreg "welfare2", specification("c")
 runreg "abortion", specification("a")
 runreg "abortion", specification("b")
 runreg "abortion", specification("c")
