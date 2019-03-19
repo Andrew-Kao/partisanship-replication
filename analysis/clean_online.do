@@ -29,6 +29,24 @@ for var afdc_reca eitc_s_child1 stax_topr stax_corpr redist atr stemploy unioniz
 
 gen ep=employed/pop_noninst
 
+* PCA
+global outcomes stax_topr stax_corpr redist atr minwage afdc_max stemploy stempavw unionization ///
+	incrate executions transfers ui afdc_reca stinctax stothertax strevenue ///
+	mean_faminc employeecomp poverty_pct gini  ///
+	unemploymentrate pcrime vcrime mrate psuicide   //naep_read
+	
+pca ${outcomes}, com(3)
+predict social ineq size, score
+
+// 	* MLE
+
+// mi set mlong
+// mi register imputed ${outcomes}
+// mi impute mvn ${outcomes}, emonly
+// matrix cov_em = r(Sigma_em)
+// factormat cov_em, n(3607) fact(3) ml  // naep_read has the most missing observations - 3607 out of 5154
+// predict social_im ineq_im size_im
+
 * Label Vars
 label var gov_dem "Democrat Governer"
 label var leg_dem "Democrat Legislature"
@@ -74,6 +92,12 @@ label var mrate "Murder Rate per 100,000"
 label var psuicide "Suicide Rate per 100,000"
 label var ep "Employment Rate"
 label var abortions "Total Abortions in State"
+label var social "Social Safety Index"
+label var ineq "Crime/Inequality Index"
+label var size "Gov. Size Index"
+// label var social_im "Imputed Social Safety Index"
+// label var ineq_im "Imputed Crime/Inequality Index"
+// label var size_im "Imputed Gov. Size Index"
 
 
 * OUTCOMES
@@ -82,6 +106,8 @@ global outcome unionization incrate executions transfers ui afdc_reca stinctax s
 global welfare1 mean_faminc mean_faminc_pt faminc50 famincpt50 employeecomp poverty_pct gini gini_pt 
 global welfare2 unemploymentrate naep_read pcrime vcrime mrate psuicide  
 global abortion abortions
+global index social ineq size
+// global index social social_im ineq ineq_im size size_im
 
 * subset of outcomes
 global subpolicies  stax_topr stax_corpr atr minwage afdc_max stemploy 
@@ -192,12 +218,53 @@ end
 // runreg "welfare2", specification("a")
 // runreg "welfare2", specification("b")
 // runreg "welfare2", specification("c")
-runreg "abortion", specification("a")
-runreg "abortion", specification("b")
-runreg "abortion", specification("c")
+// runreg "abortion", specification("a")
+// runreg "abortion", specification("b")
+// runreg "abortion", specification("c")
+// runreg "index", specification("a")
+// runreg "index", specification("b")
+// runreg "index", specification("c")
 
 
 
+*** BREUSCH PAGAN ***
+
+cap program drop bptest
+program bptest
+syntax anything
+
+local i = 1
+
+foreach depvar of global `1' {
+reg `depvar' gov_dem leg_dem leg_rep lnpop pop15 pop65 black prscore i.stfips i.year
+estat hettest gov_dem 
+local dem_p = r(p)
+estat hettest gov_dem leg_dem leg_rep lnpop pop15 pop65 black prscore i.stfips i.year
+local all_p = r(p)
+
+mat p = (`dem_p',`all_p')
+local label : var label `depvar'
+
+if `i' == 1 {
+frmttable using "$dir/output/tables/bp_`1'.tex", statmat(p) sdec(3) ctitle("Dep Var", "(1)", "(2)") rtitle("`label'") replace tex ///
+	fragment statfont(scriptsize)
+}
+else {
+frmttable using "$dir/output/tables/bp_`1'.tex", statmat(p) sdec(3) ctitle("Dep Var", "(1)", "(2)") rtitle("`label'") append tex ///
+	fragment statfont(scriptsize)
+}
+local i = `i' + 1
+
+}
+
+end
+
+bptest "policies"
+bptest "outcome"
+bptest "welfare1"
+bptest "welfare2"
+bptest "abortion"
+bptest "index"
 
 
 

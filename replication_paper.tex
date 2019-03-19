@@ -91,7 +91,7 @@
 
 \section{Introduction}
 
-Are American governors ideological? That is, do Democrat and Republican governors differ by the policies they implement, or the outcomes they deliver to their states? Leigh 2008 attempts to answer this broad question by looking at whether these outcomes differ under Democrat or Republican governorships in a panel extending over 60 years and all 50 states. 
+Are American governors ideological? That is, do Democrat and Republican governors differ by the policies they implement, or the outcomes they deliver to their states? Leigh 2008 attempts to answer this broad question by looking at whether a multitude of outcomes differ under Democrat or Republican governorships in a panel extending over 60 years and all 50 states. 
 
 This question has far-reaching consequences, given the considerable effort and investment placed into the political process, and that democracy only credibly functions when voters are able to meaningfully select for policies/outcomes in their interest.
 
@@ -106,13 +106,32 @@ The paper uses a standard OLS, using the following specification:
 
 \[ Y_{it} = \alpha + \beta G_{it} + \chi_{it} + \epsilon_{it} \]
 
-where $Y$ is the outcome in state $i$ and year $t$, $G$ is a dummy variable for whether the state has a Democratic governor, $\chi_{it}$ is a vector of demographic and political controls indexed by state and year, and $\epsilon_{it}$ a normally distributed error term. \\
+where $Y$ is the outcome in state $i$ and year $t$, $G$ is a dummy variable for whether the state has a Democratic governor, $\chi_{it}$ is a vector of demographic and political controls indexed by state and year, and $\epsilon_{it}$ a normally distributed error term clustered on the state level.
 
-However, the OLS model alone cannot account for all potential sources of endogeneity. If governors do indeed behave differently, and if voters vote rationally, then such voters would try to elect governors of a specific party in anticipation of economic or social conditions that may require different responses. To control for factors like these, Leigh adopts a regression discontinuity approach, where the discontinuity is based around the margin of victory by which the governor wins.
+Depending on the specification, $\chi_{it}$ may contain controls for which party controls the state's legislative chamber, the share of the vote received, the partisanship of the state's representatives in Congress (as measured by Poole-Rosenthal scores), log population of the state, population under age 15, population over age 65, population that is black, and fixed effects for state and year. 
 
-Given the randomness present in the voting process, it is plausible that governors who barely win the majority vote are similar to those who barely lose it, and so this would act as a quasi-experiment wherein the error should be uncorrelated with the independent variable of interest, the governor's party. Critically, unlike the share of seats won by a party in a legislative chamber, a governor with 51\% of the vote is not more meaningfully constrained in capability than one that has won 91\% of the vote.
+\subsection{Assumptions}
 
-The regression discontinuity specification is identical to that of the OLS above, except that the sample is further constrained to those with close elections. In Leigh 2008, "close" is defined to be governors that win by a margin of 30\% or less (so a candidate winning 80\% of the popular vote would be on the borderline for inclusion). As part of an extension, I narrow these bounds to 
+In order for the multiple linear regression model to hold, several assumptions need to hold true.
+\begin{enumerate}
+\item \textbf{The model is linear in parameters.} This may not be true in the case of every single outcome, but is ameliorated by two factors: first, that it is linear in the independent variable of interest, the party of the governor, since it is an indicator variable and hence a linear trend can be found between means. Second, we can always interpret the coefficients as the best linear approximation.
+\item \textbf{Random sampling.} Given that we have the entire relevant population, which is every governor in every state prior to the year 2004, random sampling is not an issue, except in the case of missing outcome variables. 
+\item \textbf{No perfect collinearity.} The covariates mentioned above are never perfectly collinear, so this is not a concern, 
+\item \textbf{Zero conditional mean.} This is the least credible assumption, as the OLS model alone cannot account for all potential sources of endogeneity. Some concerns can be addressed with the simple OLS, as unlike the share of seats won by a party in a legislative chamber, a governor with 51\% of the vote is not more meaningfully constrained in capability than one that has won 91\% of the vote. However, if governors of different parties do behave differently, and if voters vote rationally, then such voters would try to elect governors of a specific party in anticipation of economic or social conditions that may require different responses - this would certainly violate zero conditional mean. The regression discontinuity approach described below makes identification of causality more credible.
+\item \textbf{Homoskedasticity.} Even if this is violated, all regressions are run using robust standard errors, which minimizes the risk of heteroskedasticity being a concern.
+\item \textbf{Errors are normally distributed.} This might not hold in the data. However, given that $n > 3000$ for most regressions (different outcomes are missing for different observations), large sample inference is valid for the data, so that assumptions regarding normality hold as we approach the asymptotic limit.
+\end{enumerate}
+
+
+\subsection{Regression}
+
+To control for potential sources of endogeneity, Leigh adopts a regression discontinuity approach, where the discontinuity is based around the margin of victory by which the governor wins.
+
+Given the randomness present in the voting process, it is plausible that governors who barely win the majority vote are similar to those who barely lose it, and so this would act as a quasi-experiment wherein the error should be uncorrelated with the independent variable of interest, the governor's party. 
+
+The regression discontinuity specification is identical to that of the OLS above, except that the sample is further constrained to those with close elections. In Leigh 2008, "close" is defined to be governors that win by a margin of 60\% or less (so a candidate winning 80\% of the popular vote would be on the borderline for inclusion). As part of an extension, I narrow these bounds to 10\% (so 55\% or less of the popular vote) and 2\% (so 51\% or less of the popular vote); the latter runs into power issues discussed beneath.
+
+
 
 \section{Data}
 
