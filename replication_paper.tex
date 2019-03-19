@@ -89,19 +89,52 @@
 
 \begin{document}
 
+\section{Introduction}
+
+Are American governors ideological? That is, do Democrat and Republican governors differ by the policies they implement, or the outcomes they deliver to their states? Leigh 2008 attempts to answer this broad question by looking at whether these outcomes differ under Democrat or Republican governorships in a panel extending over 60 years and all 50 states. 
+
+This question has far-reaching consequences, given the considerable effort and investment placed into the political process, and that democracy only credibly functions when voters are able to meaningfully select for policies/outcomes in their interest.
+
+This paper aims to separate two strands of theory in the political economy literature. One, advanced by Downs (1957) characterises candidates and parties as only caring about political victory, with party ideology only relevant insofar as it leads to electoral success. The other, proposed by the likes of Wittman (1973) and Dixit and Londregan (1998) model parties as having exogenous policy preferences and ideology, with later work by Dhami (2003) and Roemer (2001) using intra-party politics (different factions competing) to endogenously generate ideological preferences.
+
+Empirically, Alesina and Rosenthal (1995) have found that Democratic presidents lead to higher growth and higher inflation. On the state level, Plotnick and Winters (1985) and Dilger (1998) both find that partisanship does not impact tax and expenditures, while Reed (2006) finds that Democrats are more likely to raise taxes.
+
+
+\section{Empirical Strategy}
+
+The paper uses a standard OLS, using the following specification:
+
+\[ Y_{it} = \alpha + \beta G_{it} + \chi_{it} + \epsilon_{it} \]
+
+where $Y$ is the outcome in state $i$ and year $t$, $G$ is a dummy variable for whether the state has a Democratic governor, $\chi_{it}$ is a vector of demographic and political controls indexed by state and year, and $\epsilon_{it}$ a normally distributed error term. \\
+
+However, the OLS model alone cannot account for all potential sources of endogeneity. If governors do indeed behave differently, and if voters vote rationally, then such voters would try to elect governors of a specific party in anticipation of economic or social conditions that may require different responses. To control for factors like these, Leigh adopts a regression discontinuity approach, where the discontinuity is based around the margin of victory by which the governor wins.
+
+Given the randomness present in the voting process, it is plausible that governors who barely win the majority vote are similar to those who barely lose it, and so this would act as a quasi-experiment wherein the error should be uncorrelated with the independent variable of interest, the governor's party. Critically, unlike the share of seats won by a party in a legislative chamber, a governor with 51\% of the vote is not more meaningfully constrained in capability than one that has won 91\% of the vote.
+
+The regression discontinuity specification is identical to that of the OLS above, except that the sample is further constrained to those with close elections. In Leigh 2008, "close" is defined to be governors that win by a margin of 30\% or less (so a candidate winning 80\% of the popular vote would be on the borderline for inclusion). As part of an extension, I narrow these bounds to 
+
 \section{Data}
 
 \begin{enumerate}
 \item State political variables from ICPSR (1995)
 \end{enumerate}
 
-\include{output/tables/abortion_a}
+\section{Empirical Results}
+
+
+
+\section{Conclusion}
+
+\section{Appendix}
+
+\input{output/tables/abortion_a}
 \textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
 
-\include{output/tables/abortion_b}
+\input{output/tables/abortion_b}
 \textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
 
-\include{output/tables/abortion_c}
+\input{output/tables/abortion_c}
 \textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
 
 

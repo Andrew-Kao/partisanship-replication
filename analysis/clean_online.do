@@ -126,6 +126,7 @@ eststo clear
 cap program drop runreg
 program runreg 
 syntax anything, specification(string)
+
 local i = 1
 foreach depvar of global `1' {
 reg `depvar' ${reg1`specification'} 
