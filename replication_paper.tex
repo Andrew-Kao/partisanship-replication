@@ -81,11 +81,12 @@
 \usepackage{enumitem}				%Enumerating using letters
 \usepackage{mathrsfs}				%Fonts
 \usepackage{listings}
+\usepackage{hyperref}
 \setlength{\headheight}{15.2pt}
 \pagestyle{fancy}
 \lhead{ \fancyplain{}{Andrew Kao} }
 \rhead{ \fancyplain{}{Winter 2019} }
-\chead{ \fancyplain{}{Honors Econometrics: Replication} }
+\chead{ \fancyplain{}{Honors Econometrics: Replicating Leigh 2008} }
 
 \begin{document}
 
@@ -115,15 +116,20 @@ Depending on the specification, $\chi_{it}$ may contain controls for which party
 In order for the multiple linear regression model to hold, several assumptions need to hold true.
 \begin{enumerate}
 \item \textbf{The model is linear in parameters.} This may not be true in the case of every single outcome, but is ameliorated by two factors: first, that it is linear in the independent variable of interest, the party of the governor, since it is an indicator variable and hence a linear trend can be found between means. Second, we can always interpret the coefficients as the best linear approximation.
+
 \item \textbf{Random sampling.} Given that we have the entire relevant population, which is every governor in every state prior to the year 2004, random sampling is not an issue, except in the case of missing outcome variables. 
-\item \textbf{No perfect collinearity.} The covariates mentioned above are never perfectly collinear, so this is not a concern, 
+
+\item \textbf{No perfect collinearity.} The covariates mentioned above are never perfectly collinear, so this is not a concern. 
+
 \item \textbf{Zero conditional mean.} This is the least credible assumption, as the OLS model alone cannot account for all potential sources of endogeneity. Some concerns can be addressed with the simple OLS, as unlike the share of seats won by a party in a legislative chamber, a governor with 51\% of the vote is not more meaningfully constrained in capability than one that has won 91\% of the vote. However, if governors of different parties do behave differently, and if voters vote rationally, then such voters would try to elect governors of a specific party in anticipation of economic or social conditions that may require different responses - this would certainly violate zero conditional mean. The regression discontinuity approach described below makes identification of causality more credible.
-\item \textbf{Homoskedasticity.} Even if this is violated, all regressions are run using robust standard errors, which minimizes the risk of heteroskedasticity being a concern.
-\item \textbf{Errors are normally distributed.} This might not hold in the data. However, given that $n > 3000$ for most regressions (different outcomes are missing for different observations), large sample inference is valid for the data, so that assumptions regarding normality hold as we approach the asymptotic limit.
+
+\item \textbf{Homoskedasticity.} The Breuch-Pagan test is employed for all outcomes of interest with results displayed in tables ~\ref{table:bp_outcome} to ~\ref{table:bp_index}. Though homoskedasticity is not always rejected for $p < .1$ when an indicator for governor party is the sole independent variable, it is always rejected once other controls are added in. Thus, all regressions are run using robust standard errors, to correct  for the concern of heteroskedasticity.
+
+\item \textbf{Errors are normally distributed.} This might not hold in the data. However, given that $n \approx 3000$ for most regressions (different outcomes are missing for different observations), large sample inference is valid for the data, so that assumptions regarding normality hold as we approach the asymptotic limit.
 \end{enumerate}
 
 
-\subsection{Regression}
+\subsection{Regression Discontinuity and Endogeneity}
 
 To control for potential sources of endogeneity, Leigh adopts a regression discontinuity approach, where the discontinuity is based around the margin of victory by which the governor wins.
 
@@ -131,13 +137,84 @@ Given the randomness present in the voting process, it is plausible that governo
 
 The regression discontinuity specification is identical to that of the OLS above, except that the sample is further constrained to those with close elections. In Leigh 2008, "close" is defined to be governors that win by a margin of 60\% or less (so a candidate winning 80\% of the popular vote would be on the borderline for inclusion). As part of an extension, I narrow these bounds to 10\% (so 55\% or less of the popular vote) and 2\% (so 51\% or less of the popular vote); the latter runs into power issues discussed beneath.
 
+Additionally, since the first year of a governor's term may be impacted by residual policies and effects of the prior governor, regressions are replicated both omitting and keeping data from the first year of a governor's term.
 
 
 \section{Data}
 
-\begin{enumerate}
-\item State political variables from ICPSR (1995)
-\end{enumerate}
+The data used in this replication comes directly from Leigh's website, located at \url{http://www.andrewleigh.org/research.htm#PoliticalEconomy}. My attempt to reconstruct the dataset was only partially successful, as though data such as that regarding governors was accessible (and did match Leigh's work), many of the outcomes of interest were hosted on websites or other data sources that are no longer accessible.
+
+Given that the paper aims to answer whether there are differences between governors of different parties, and governors could potentially create change along many axes, a large battery of variables are used for outcomes in this analysis. Present in Leigh's analysis are five categories of variables, and I add in the two final ones to extend on the paper. They are:
+\begin{itemize}
+\item Political variables and controls
+\item Policy settings
+\item Intermediate outcomes
+\item Social welfare measures - income and income distribution
+\item Social welfare measures - work, education, crime, and suicide
+\item Abortions
+\item PCA Indices
+\end{itemize}
+
+Descriptive statistics for all of them are presented in table ~\ref{table:summary_long}
+
+\subsection{Political Variables and Controls}
+
+Democrat governor, Democrat legislature and their interaction are all dummies. Voteshare received by Democratic Candidate. These variables are sourced from ICPSR (1995) with more recent figures from the Congressional Quarterly database. 
+
+Poole-Rosenthal scores come from Poole's website, range from -1 to 1 (representing liberal to conservative), and are imputed every other year when no election took place.
+
+Demographic information comes from IPUMS, with interpolation used for non census years, while population figures come from the BEA.
+
+
+\subsection{Policy Settings}
+
+Top income tax and corporate tax rates come from the World Tax Database at the Ross School of Business.
+
+The Tax Redistribution Index and Average Tax Rate are calculated using data from the March 1990 CPS (Current Population Survey), and and involves computing the amount by which the income taxation system reduces the gini coefficient; the specific method is outlined in Leigh 2005, but broadly speaking involves linking respondent incomes to match overall state moments after factoring in various tax policies, and the tax burden then calculated for each state and year. 
+
+Minimum wage data comes from Neumark and Nizalova 2007.
+
+The maximum welfare amount is the most real benefit a family of four can receive under AFDC/TANF.
+
+State employment and salaries are from the BEA.
+
+\subsection{Intermediate Outcomes}
+
+Data on unionization rates are based on the CPS Outgoing Rotation Group (ORG) earnings files, the BLS publication, Directory of National Unions and Associations, and record the percentage of each state's non-agricultural wage and salary employees that are union members.
+
+The incarceration rate statistics are from the Bureau of Justice Statistics, and count the number incarcerated in state prisons per 100,000 people per year.
+
+The execution rates are from Espy and Smykla 2004 and is the execution rate per 100,000 people per year.
+
+Data on transfers, unemployment insurance, state tax revenue and overall state revenues are from the BEA, and in logs where indicated.
+
+\subsection{Social welfare measures - income and income distribution}
+
+Average income, inequality, and poverty measures are calculated from the CPS data, where family incomes are adjusted by dividing by the square root of the family size/individual data is weighted by person-weights to match demographic compositions. Family incomes less than 1/10 and over 10x the median are recoded to those values. Data for poverty in earlier years comes from Unicon.
+
+\subsection{Social welfare measures - work, education, crime, and suicide}
+
+Unemployment rates come from the Bureau of Labor Statistics.
+
+The National Assessment of Education Progress (NAEP) scores are from the National Center of Education Statistics, with four grade scores used because they are the most complete across states and years.
+
+Property and violent crime rates are from the Bureau of Justice Statistics, using crimes committed per 100,000 people per year.
+
+Suicide rates are from Stevenson and Wolfers 2006, where the rate is suicides per 100,000 people per year.
+
+\subsection{Abortions}
+
+First, why look at abortions as an extension to the original paper? Many of the outcomes listed above are not particularly ideological in nature - everybody wants to see lower unemployment rates, or students performing better, or higher incomes. For issues that do have partisan leanings, such as tax rates, it is unclear that voters would be galvanized to actually vote based on partisan splits in policy given their uninspiring nature.
+
+Thus, if the purpose of the paper was to examine to extent to which governors are ideological, then it would make sense to look at outcomes that are the most ideologically divisive. According to Gallup, abortions are the most ideologically divisive issue (\url{https://news.gallup.com/poll/235640/above-issues-abortion-divides-liberals-conservatives.aspx?}) and has historically held this contentious status as well, making it a good proxy for how ideological governors are.
+
+Abortion data was scraped by me using the website Johnston's Archive. The specific metric used is the number of abortions reported by the CDC in the state (including those from out of state residents) - this is an appropriate measure to use for several reasons. First, using non-official estimates, such as that produced by the AGI, is counterproductive when we want to measure the effect that governors have on abortion; if the number of official abortions declines due to a restrictive policy but the total number of abortions remains the same as people substitute to unofficial channels, this would still be a clear expression of ideology. Second, residents from out of state are included in this analysis as well, because ideology can also be expressed along this dimension - a Democrat governor could loosen restrictions on in-state abortions to increase access for others out of state for ideological reasons. Finally, a rate (for instance, abortions as a proportion of live births) is actually a noisier method, as we already have a control population, and the rate of population growth may be tied to other policies that are not ideological in nature.
+
+\subsection{PCA Indices}
+
+One additional concern with the original paper is that it does not correct for multiple hypothesis testing. Given that the paper largely aims to show that partisan differences do not exist along most measures, standard measures to correct for multiple hypothesis testing would make it far too hard to reject the null hypothesis that the effect of having a democratic governor is 0 (and so would be insufficiently conservative). 
+
+Instead, I use PCA on the range of outcomes described above to generate three indices. 
 
 \section{Empirical Results}
 
@@ -145,16 +222,78 @@ The regression discontinuity specification is identical to that of the OLS above
 
 \section{Conclusion}
 
+
+%%%%%%%%   APPENDIX    %%%%%%%%%%
 \section{Appendix}
 
+%%%%% BP %%%%%%%
+
+\begin{table}[!hbtp]
+\caption{Breuch-Pagan Tests for Intermediate Outcomes}
+\input{output/tables/bp_outcome}
+\textbf{Note:} Displayed are p-values for the Breuch-Pagan test regressing on the outcome of interest. Column 1 tests using only an indicator for governor party as the independent variable, while column 2 tests using all covariates. 
+\label{table:bp_outcome}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Breuch-Pagan Tests for State Policies}
+\input{output/tables/bp_policies}
+\textbf{Note:} Displayed are p-values for the Breuch-Pagan test regressing on the outcome of interest. Column 1 tests using only an indicator for governor party as the independent variable, while column 2 tests using all covariates. 
+\label{table:bp_policies}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Breuch-Pagan Tests for Welfare Outcomes - Income}
+\input{output/tables/bp_welfare1}
+\textbf{Note:} Displayed are p-values for the Breuch-Pagan test regressing on the outcome of interest. Column 1 tests using only an indicator for governor party as the independent variable, while column 2 tests using all covariates. 
+\label{table:bp_welfare1}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Breuch-Pagan Tests for Welfare Outcomes - Work and Crime}
+\input{output/tables/bp_welfare2}
+\textbf{Note:} Displayed are p-values for the Breuch-Pagan test regressing on the outcome of interest. Column 1 tests using only an indicator for governor party as the independent variable, while column 2 tests using all covariates. 
+\label{table:bp_welfare2}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Breuch-Pagan Test for Abortion}
+\input{output/tables/bp_abortion}
+\textbf{Note:} Displayed are p-values for the Breuch-Pagan test regressing on the outcome of interest. Column 1 tests using only an indicator for governor party as the independent variable, while column 2 tests using all covariates. 
+\label{table:bp_abortion}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Breuch-Pagan Test for Indices}
+\input{output/tables/bp_index}
+\textbf{Note:} Displayed are p-values for the Breuch-Pagan test regressing on the outcome of interest. Column 1 tests using only an indicator for governor party as the independent variable, while column 2 tests using all covariates. 
+\label{table:bp_index}
+\end{table}
+
+%%%%%%%% DESCRIPTIVES %%%%%%%%
+
+\begin{table}[!hbtp]
+\caption{Summary Statistics for All Variables}
+\input{output/tables/summary_long}
+\\ \\
+\textbf{Note:}  Top Income Tax Rate, Top Corporate Tax Rate, Average Income Tax Rate, Percent Population  Gov Employees, Unionization Rate, and Gini are expressed in percentages.
+\label{table:summary_long}
+\end{table}
+
+
+\begin{table}[!hbtp]
 \input{output/tables/abortion_a}
 \textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
+\end{table}
 
+\begin{table}[!hbtp]
 \input{output/tables/abortion_b}
 \textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
+\end{table}
 
+\begin{table}[!hbtp]
 \input{output/tables/abortion_c}
 \textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
-
+\end{table}
 
 \end{document}

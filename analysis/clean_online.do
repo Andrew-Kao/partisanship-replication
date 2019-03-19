@@ -28,6 +28,7 @@ gen decade=(int(year/10))*10
 for var afdc_reca eitc_s_child1 stax_topr stax_corpr redist atr stemploy unionization poverty_pct unemployment gini gini_pt: replace X=X*100
 
 gen ep=employed/pop_noninst
+replace abortions = 0 if abortions < 0
 
 * PCA
 global outcomes stax_topr stax_corpr redist atr minwage afdc_max stemploy stempavw unionization ///
@@ -138,12 +139,19 @@ global reg5c gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 bla
 
 * Summary Stats
 
+// reg lnpop gov_dem i.stfips i.year, r
+// estpost tabstat gov_dem leg_dem dem_voteshare lnpop pop15 pop65 black $subpolicies $suboutcome $subwelfare1 $subwelfare2 if e(sample) & year>=1941, stats(mean sd n min max) col(s) //all_dem all_rep prscore
+// eststo m1
+
+// esttab m1 using "$dir/output/tables/summary.tex", cells("mean(fmt(2)) sd min max") nostar ///
+//  label booktabs mtitles("Summary Statistics") replace
+ 
 reg lnpop gov_dem i.stfips i.year, r
-estpost tabstat gov_dem leg_dem dem_voteshare lnpop pop15 pop65 black $subpolicies $suboutcome $subwelfare1 $subwelfare2 if e(sample) & year>=1941, stats(mean sd n min max) col(s) //all_dem all_rep prscore
+estpost tabstat gov_dem leg_dem dem_voteshare lnpop pop15 pop65 black $policies $outcome $welfare1 $welfare2 $abortion $index if e(sample) & year>=1941, stats(mean sd n min max) col(s) //all_dem all_rep prscore
 eststo m1
 
-esttab m1 using "$dir/output/tables/summary.tex", cells("mean(fmt(2)) sd min max") nostar ///
- label booktabs mtitles("Summary Statistics") replace
+esttab m1 using "$dir/output/tables/summary_long.tex", cells("mean(fmt(2)) sd min max") nostar ///
+ label nomtitles booktabs  replace  //mtitles("Summary Statistics")
 
 eststo clear
 
@@ -259,12 +267,12 @@ local i = `i' + 1
 
 end
 
-bptest "policies"
-bptest "outcome"
-bptest "welfare1"
-bptest "welfare2"
-bptest "abortion"
-bptest "index"
+// bptest "policies"
+// bptest "outcome"
+// bptest "welfare1"
+// bptest "welfare2"
+// bptest "abortion"
+// bptest "index"
 
 
 
