@@ -275,7 +275,37 @@ end
 // bptest "index"
 
 
+*** POWER ***
+* incarceration rates
+power onemean 0 -12, sd(178.6) alpha(.1)
+power onemean 0 .012, sd(.1483) alpha(.1)
 
 
+*** Abortion Nice Tables ***
 
 
+reg abortions gov_dem i.stfips i.year, r cluster(stfips)
+est sto m1
+reg abortions gov_dem lnpop pop15 pop65 black i.stfips i.year, r cluster(stfips)
+reg abortions gov_dem leg_dem leg_rep lnpop pop15 pop65 black i.stfips i.year, r cluster(stfips)
+reg abortions gov_dem leg_dem leg_rep lnpop pop15 pop65 black prscore i.stfips i.year, r cluster(stfips)
+reg abortions gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 black i.stfips i.year if dem_voteshare<=.8 & dem_voteshare>=.2, r cluster(stfips)
+
+
+esttab m1 m2 m3 m4 m5 using "Tables/revision_exp2_yes_weighted.tex", replace label f b(a4)    p star(* 0.10 ** 0.05 *** 0.01)  cells(b(star fmt(0)) se(par([ ]) fmt(0))) /// p(par fmt(3)))    /// 
+stats(N r2, fmt(0 4) labels ("N" "R-Squared"))	 alignment (S S) coeflabels(_cons "Baseline") keep(abortions `regvars' _cons)  ///
+ collabels(none) brackets nomtitles nogap  booktabs 
+
+
+reg abortions gov_dem i.stfips i.year if termyear~=1, r cluster(stfips)
+reg abortions gov_dem lnpop pop15 pop65 black i.stfips i.year if termyear~=1, r cluster(stfips)
+reg abortions gov_dem leg_dem leg_rep lnpop pop15 pop65 black i.stfips i.year if termyear~=1, r cluster(stfips)
+reg abortions gov_dem leg_dem leg_rep lnpop pop15 pop65 black prscore i.stfips i.year if termyear~=1, r cluster(stfips)
+reg abortions gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 black i.stfips i.year if termyear~=1 & dem_voteshare<=.8 & dem_voteshare>=.2, r cluster(stfips)
+
+
+reg abortions gov_dem i.stfips i.year if termyear~=1 & dem_voteshare<=.8 & dem_voteshare>=.2, r cluster(stfips)
+reg abortions gov_dem i.stfips i.year if termyear~=1 & dem_voteshare<=.55 & dem_voteshare>=.45, r cluster(stfips)
+reg abortions gov_dem i.stfips i.year if termyear~=1 & dem_voteshare<=.51 & dem_voteshare>=.49, r cluster(stfips)
+reg abortions gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 black i.stfips i.year if termyear~=1 & dem_voteshare<=.55 & dem_voteshare>=.45, r cluster(stfips)
+reg abortions gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 black i.stfips i.year if termyear~=1 & dem_voteshare<=.51 & dem_voteshare>=.49, r cluster(stfips)

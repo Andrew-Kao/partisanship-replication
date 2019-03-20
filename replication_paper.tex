@@ -117,13 +117,13 @@ In order for the multiple linear regression model to hold, several assumptions n
 \begin{enumerate}
 \item \textbf{The model is linear in parameters.} This may not be true in the case of every single outcome, but is ameliorated by two factors: first, that it is linear in the independent variable of interest, the party of the governor, since it is an indicator variable and hence a linear trend can be found between means. Second, we can always interpret the coefficients as the best linear approximation.
 
-\item \textbf{Random sampling.} Given that we have the entire relevant population, which is every governor in every state prior to the year 2004, random sampling is not an issue, except in the case of missing outcome variables. 
+\item \textbf{Random sampling.} Given that we have the entire relevant population, which is every governor in every state prior to the year 2004, random sampling is not an issue, except in the case of missing outcome variables. However, since outcome variables only tend to be missing in years where they were not collected (typically earlier years), this should not introduce bias that would disrupt the internal validity of the claims.
 
 \item \textbf{No perfect collinearity.} The covariates mentioned above are never perfectly collinear, so this is not a concern. 
 
-\item \textbf{Zero conditional mean.} This is the least credible assumption, as the OLS model alone cannot account for all potential sources of endogeneity. Some concerns can be addressed with the simple OLS, as unlike the share of seats won by a party in a legislative chamber, a governor with 51\% of the vote is not more meaningfully constrained in capability than one that has won 91\% of the vote. However, if governors of different parties do behave differently, and if voters vote rationally, then such voters would try to elect governors of a specific party in anticipation of economic or social conditions that may require different responses - this would certainly violate zero conditional mean. The regression discontinuity approach described below makes identification of causality more credible.
+\item \textbf{Zero conditional mean.} This is the least credible assumption, as the OLS model alone cannot account for all potential sources of endogeneity. Some concerns can be addressed with the simple OLS, as unlike the share of seats won by a party in a legislative chamber, a governor with 51\% of the vote is not more meaningfully constrained in capability than one that has won 91\% of the vote. However, if governors of different parties do behave differently (or are simply perceived to behave differently), and if voters vote rationally, then such voters would try to elect governors of a specific party in anticipation of economic or social conditions that may require different responses - this would create an issue of reverse causality. The regression discontinuity approach described below makes identification of causality more credible.
 
-\item \textbf{Homoskedasticity.} The Breuch-Pagan test is employed for all outcomes of interest with results displayed in tables ~\ref{table:bp_outcome} to ~\ref{table:bp_index}. Though homoskedasticity is not always rejected for $p < .1$ when an indicator for governor party is the sole independent variable, it is always rejected once other controls are added in. Thus, all regressions are run using robust standard errors, to correct  for the concern of heteroskedasticity.
+\item \textbf{Homoskedasticity.} The Breuch-Pagan test is employed for all outcomes of interest with results displayed in Tables ~\ref{table:bp_outcome} to ~\ref{table:bp_index}. Though homoskedasticity is not always rejected for $p < .1$ when an indicator for governor party is the sole independent variable, it is always rejected once other controls are added in. Thus, all regressions are run using robust standard errors, to correct  for the concern of heteroskedasticity.
 
 \item \textbf{Errors are normally distributed.} This might not hold in the data. However, given that $n \approx 3000$ for most regressions (different outcomes are missing for different observations), large sample inference is valid for the data, so that assumptions regarding normality hold as we approach the asymptotic limit.
 \end{enumerate}
@@ -135,9 +135,11 @@ To control for potential sources of endogeneity, Leigh adopts a regression disco
 
 Given the randomness present in the voting process, it is plausible that governors who barely win the majority vote are similar to those who barely lose it, and so this would act as a quasi-experiment wherein the error should be uncorrelated with the independent variable of interest, the governor's party. 
 
-The regression discontinuity specification is identical to that of the OLS above, except that the sample is further constrained to those with close elections. In Leigh 2008, "close" is defined to be governors that win by a margin of 60\% or less (so a candidate winning 80\% of the popular vote would be on the borderline for inclusion). As part of an extension, I narrow these bounds to 10\% (so 55\% or less of the popular vote) and 2\% (so 51\% or less of the popular vote); the latter runs into power issues discussed beneath.
+The regression discontinuity specification is identical to that of the OLS above, except that the sample is further constrained to those with close elections. In Leigh 2008, "close" is defined to be governors that win by a margin of 60\% or less (so a candidate winning 80\% of the popular vote would be on the borderline for inclusion). This appears insufficient to me, as governors that win with 80\% of the vote can look very different from those that barely lose the voter; moreover, the issue of reverse causality can only be credibly rejected when the margin of victory is within the margin of error surrounding election predictions (typically no more than 10\% for polls).
 
-Additionally, since the first year of a governor's term may be impacted by residual policies and effects of the prior governor, regressions are replicated both omitting and keeping data from the first year of a governor's term.
+As part of an extension, I narrow these bounds to 10\% (so 55\% or less of the popular vote) and 2\% (so 51\% or less of the popular vote); the latter runs into power issues discussed beneath.
+
+Additionally, since the first year of a governor's term may be impacted by residual policies and effects of the prior governor, which is potentially a source of endogeneity if voters elect retributively (i.e. voters elect a new party into power to punish the prior party for doing poorly), regressions are replicated both omitting and keeping data from the first year of a governor's term.
 
 
 \section{Data}
@@ -155,7 +157,7 @@ Given that the paper aims to answer whether there are differences between govern
 \item PCA Indices
 \end{itemize}
 
-Descriptive statistics for all of them are presented in table ~\ref{table:summary_long}
+Descriptive statistics for all of them are presented in Table ~\ref{table:summary_long}
 
 \subsection{Political Variables and Controls}
 
@@ -214,10 +216,53 @@ Abortion data was scraped by me using the website Johnston's Archive. The specif
 
 One additional concern with the original paper is that it does not correct for multiple hypothesis testing. Given that the paper largely aims to show that partisan differences do not exist along most measures, standard measures to correct for multiple hypothesis testing would make it far too hard to reject the null hypothesis that the effect of having a democratic governor is 0 (and so would be insufficiently conservative). 
 
-Instead, I use PCA on the range of outcomes described above to generate three indices. 
+Instead, I use PCA on the range of outcomes described above to generate three indices. A breakdown of the rotated component by variable can be seen in Table ~\ref{table:pca_rotated_vars}.
+
+I identify the components as, respectively, the Social Safety Index, the Crime/Inequality Index, and the Government Size Index. 
+
+\begin{itemize}
+\item \textbf{Social Safety Index}: This can be interpreted as the degree to which a social safety net is provided, and is visible from the factor loading on minimum wage, government transfers, unionisation rates and a larger government budget. It can also be interpreted more generally as economic wellbeing, as it also loads on higher wages and family incomes.
+
+\item \textbf{Crime/Inequality Index}: This can be interpreted as representing both the amount of crime in the state, as well as the amount inequality in the state (though PCA can give no causal interpretation for the link between these two dimensions, they are highly correlated). This can be seen from the factor loading on higher incarceration rates and crime rates, and along inequality, higher poverty rates, gini index, unemployment, and also loads on lower taxes and transfers.
+
+\item \textbf{Government Size Index}: This can be interpreted as how large the government is, and can be seen from the factor loading on higher tax rates for corporates and individuals, the amount redistributed to people (and maximum benefits that families can receive), the amount the state employs, and also state income taxes and revenues.
+\end{itemize} 
+
+These three components collectively explain 58\% of the variance in the data, with more detail given in Table ~\ref{table:pca_rotated_comp}. It is important to note that the components are only generated and computed for the subsample in which no variables are missing; this amounts to $n = 794$.
+
+Though the indices may be slightly harder to interpret than any individual outcome (the magnitude of the coefficient in particular is fairly meaningless), it is also more indicative of a fundamental partisan difference along the outcome if there are any significant differences, given that it aggregates more information and is not subject to the multiple hypothesis testing problem.
 
 \section{Empirical Results}
 
+\subsection{Plain OLS}
+
+I begin by replicating the tables present in Leigh 2008. These are Tables ~\ref{table:policies_a} to ~\ref{table:welfare2_a}, and are identical to the results shown in the paper. Next, these regressions are replicated omitting the first year of each governor's term in Tables  ~\ref{table:policies_b} to ~\ref{table:welfare2_b}. Finally, the results of different regression discontinuity specifications are displayed in Tables  ~\ref{table:policies_c} to ~\ref{table:welfare2_c}. 
+
+For the vast majority of outcomes, the party of the governor does not appear to have an effect statistically significantly different from 0, indicating that along most measures, Democratic and Republican governors behave similarly and hence non-ideologically. There are some cases where the coefficients are consistently large with large standard errors (for instance, the point estimate of a democratic governor on the top income tax rate appears to be in the range of -20\%, but the standard errors are not much smaller), but given that the sample in this dataset is close to complete, increasing the sample for increased power is not an option.
+
+There are a few notable exceptions, however: Incarceration rates, post-tax income, and post-tax gini in particular have statistically significant results that appear more robust across the regular OLS category both omitting and keeping the first year of a governor's term. 
+
+Holding all other factors equal, and assuming that causality holds the presence of a Democratic governor appears to cause around a 12 fewer people incarcerated per 100,000/year, a 1.2\% increase in median family post-tax incomes, and a reduction in the post-tax Gini index by .30 points. These are each quite significant, as the mean incarceration rate is 232 people per 100,000/year, so 12 fewer people would be a 5\% reduction in incarceration rates. A 1.2\% increase in median family post-tax incomes is a large effect as well. For context, the wide array of literature on rising inequality in the US is based around an approximately 6 point increase from 34.6 in 1980 to 40.4 in 2010, so a .30 reduction is still quite meaningful.
+
+For all the other outcomes, we cannot reject the hypothesis that Democratic governors have no effect for at least three specifications. 
+
+\subsection{Regression Discontinuity}
+
+However, as mentioned above, the simple OLS model may run into issues regarding reverse causality, meaning that we should look to confirm the results using the regression discontinuity approach. The results for incarceration rates and median family post-tax incomes are not robust to the regression discontinuity specification, with even the sign changing for both these outcomes; in essence, this reveals that in close gubernatorial races, the difference between having a Democratic and Republican governor may be quite slight, and may mean that it is simply reverse causality driving the prior results. We can still conclude that Democratic governors preside over states with lower incarceration rates and higher incomes, but cannot credibly conclude that the relationship is causal.
+
+The regression discontinuity approach does corroborate the simple OLS findings for Post-Tax Gini, however, with a coefficient that is substantially larger (in the range of -.95 to -9.95), meaning that this is not only highly statistically significant, but also bears immense large economic significance, in that Democratic governors are able to substantially reduce inequality during their terms.
+
+It may also be the case that the regression discontinuity fails to be significant for incarceration rates and incomes because it is underpowered. To detect a coefficient of magnitude -12 (as found in the simple OLS above) in incarceration rates at $\alpha = .1, n = 1371$ is required; this is in contrast to the $n = 72$  present in column 5 of Table ~\ref{table:outcome_c} for incarceration rates. Similarly, for the post-tax incomes, to detect a coefficient of magnitude .012 at $\alpha =.1, n = 942$ is required; this is in contrast to the $n = 84$ present in column 5 of the same table. Thus, the regression discontinuity approach at the 2\% threshold is not powered to detect the differences found in the simple OLS. Even in the least restrictive specification with the regression discontinuity, column 1 which has a 60\% threshold, is still underpowered with $n = 786$ for incarceration rates and $n = 929$ for income. For these other measures that have results that are less extreme, the regression discontinuity regressions are largely uninformative. 
+
+
+\subsection{Abortion}
+
+
+\subsection{Index}
+
+All three indices have partisan leanings commonly associated with them - Democrats are seen as more willing to provide social services, Republicans are seen as being tougher on crime, and Democrats tend to be more supportive of larger governments. 
+
+However, in line with the results discussed above, the effect of a Democratic governor on these indices are almost never statistically significant (the one exception is the heavily underpowered 2\% regression discontinuity approach without any controls). 
 
 
 \section{Conclusion}
@@ -280,20 +325,155 @@ Instead, I use PCA on the range of outcomes described above to generate three in
 \label{table:summary_long}
 \end{table}
 
+\begin{table}[!hbtp]
+\caption{PCA Rotated Components and Variables}
+\includegraphics[width=15cm]{output/tables/pca_rotated_vars}
+\\ \\
+\textbf{Note:} Rotations are used to explicate simple structure and to identify clusters of correlated variables; in this case, for each component, large coefficients indicate that the factor loads on the variable more. The final column is the unexplained variance remaining after three components have been loaded.
+\label{table:pca_rotated_vars}
+\end{table}
 
 \begin{table}[!hbtp]
+\caption{PCA Rotated Components Variance}
+\includegraphics[width=15cm]{output/tables/pca_rotated_comp}
+\\ \\
+\textbf{Note:} The first column indicates the variance in the data explained by each component, while the third and fourth columns show this as a percentage of the total variance.
+\label{table:pca_rotated_comp}
+\end{table}
+
+%%%%%%% REGRESSIONS %%%%%%%%
+
+%% a %% 
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on State Policies}
+\input{output/tables/policies_a}
+\textbf{Note:} Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:policies_a}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Intermediate Outcomes}
+\input{output/tables/outcome_a}
+\textbf{Note:} Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:outcome_a}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Welfare Outcomes - Income}
+\input{output/tables/welfare1_a}
+\textbf{Note:} Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:welfare1_a}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Welfare Outcomes - Work and Crime}
+\input{output/tables/welfare2_a}
+\textbf{Note:} Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:welfare2_a}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Abortion}
 \input{output/tables/abortion_a}
-\textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
+\textbf{Note:} Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:abortion_a}
 \end{table}
 
 \begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Indices}
+\input{output/tables/index_a}
+\textbf{Note:} Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:index_a}
+\end{table}
+
+
+%% b %%
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on State Policies - Omit First Year}
+\input{output/tables/policies_b}
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:policies_b}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Intermediate Outcomes - Omit First Year}
+\input{output/tables/outcome_b}
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:outcome_b}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Welfare Outcomes - Income - Omit First Year}
+\input{output/tables/welfare1_b}
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:welfare1_b}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Welfare Outcomes - Work and Crime - Omit First Year}
+\input{output/tables/welfare2_b}
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:welfare2_b}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Abortion - Omit First Year}
 \input{output/tables/abortion_b}
-\textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:abortion_b}
 \end{table}
 
 \begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Indices - Omit First Year}
+\input{output/tables/index_b}
+\textbf{Note:} The first year of each governor's term is dropped.  Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:index_b}
+\end{table}
+
+%% c %%
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on State Policies - Regression Discontinuity}
+\input{output/tables/policies_c}
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Column 1 is the regression discontinuity with margin of victory $<$ 60\%, columns 2 and 4 is the RD with margin $<$ 10\%, and columns 3 and 5 the RD with margin $<$ 2\%. Columns 4 and 5 add demographic factors, local legislature partisanship, and state representatives in Congress as controls. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:policies_c}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Intermediate Outcomes - Regression Discontinuity}
+\input{output/tables/outcome_c}
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Column 1 is the regression discontinuity with margin of victory $<$ 60\%, columns 2 and 4 is the RD with margin $<$ 10\%, and columns 3 and 5 the RD with margin $<$ 2\%. Columns 4 and 5 add demographic factors, local legislature partisanship, and state representatives in Congress as controls. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:outcome_c}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Welfare Outcomes - Income - Regression Discontinuity}
+\input{output/tables/welfare1_c}
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Column 1 is the regression discontinuity with margin of victory $<$ 60\%, columns 2 and 4 is the RD with margin $<$ 10\%, and columns 3 and 5 the RD with margin $<$ 2\%. Columns 4 and 5 add demographic factors, local legislature partisanship, and state representatives in Congress as controls. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:welfare1_c}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Welfare Outcomes - Work and Crime - Regression Discontinuity}
+\input{output/tables/welfare2_c}
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Column 1 is the regression discontinuity with margin of victory $<$ 60\%, columns 2 and 4 is the RD with margin $<$ 10\%, and columns 3 and 5 the RD with margin $<$ 2\%. Columns 4 and 5 add demographic factors, local legislature partisanship, and state representatives in Congress as controls. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:welfare2_c}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Abortion - Regression Discontinuity}
 \input{output/tables/abortion_c}
-\textbf{Note:} Column 5 is the regression discontinuity (margin of victory $<$ 30\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, columns 4 - 5 include controls for state representatives in Congress.
+\textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Column 1 is the regression discontinuity with margin of victory $<$ 60\%, columns 2 and 4 is the RD with margin $<$ 10\%, and columns 3 and 5 the RD with margin $<$ 2\%. Columns 4 and 5 add demographic factors, local legislature partisanship, and state representatives in Congress as controls. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:abortion_c}
+\end{table}
+
+\begin{table}[!hbtp]
+\caption{Effect of Democratic Governor on Indices - Regression Discontinuity}
+\input{output/tables/index_c}
+\textbf{Note:} The first year of each governor's term is dropped.  Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Column 1 is the regression discontinuity with margin of victory $<$ 60\%, columns 2 and 4 is the RD with margin $<$ 10\%, and columns 3 and 5 the RD with margin $<$ 2\%. Columns 4 and 5 add demographic factors, local legislature partisanship, and state representatives in Congress as controls. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
+\label{table:index_c}
 \end{table}
 
 \end{document}
