@@ -139,12 +139,12 @@ global reg5c gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 bla
 
 * Summary Stats
 
-// reg lnpop gov_dem i.stfips i.year, r
-// estpost tabstat gov_dem leg_dem dem_voteshare lnpop pop15 pop65 black $subpolicies $suboutcome $subwelfare1 $subwelfare2 if e(sample) & year>=1941, stats(mean sd n min max) col(s) //all_dem all_rep prscore
-// eststo m1
+reg lnpop gov_dem i.stfips i.year, r
+estpost tabstat gov_dem leg_dem dem_voteshare lnpop pop15 pop65 black $subpolicies $suboutcome $subwelfare1 $subwelfare2 if e(sample) & year>=1941, stats(mean sd n min max) col(s) //all_dem all_rep prscore
+eststo m1
 
-// esttab m1 using "$dir/output/tables/summary.tex", cells("mean(fmt(2)) sd min max") nostar ///
-//  label booktabs mtitles("Summary Statistics") replace
+esttab m1 using "$dir/output/tables/summary.tex", cells("mean(fmt(2)) sd min max") nostar ///
+ label booktabs mtitles("Summary Statistics") replace
  
 reg lnpop gov_dem i.stfips i.year, r
 estpost tabstat gov_dem leg_dem dem_voteshare lnpop pop15 pop65 black $policies $outcome $welfare1 $welfare2 $abortion $index if e(sample) & year>=1941, stats(mean sd n min max) col(s) //all_dem all_rep prscore
@@ -214,24 +214,24 @@ end
 
 
 *** RUN REGRESSIONS ***
-// runreg "policies", specification("a")
-// runreg "policies", specification("b")
-// runreg "policies", specification("c")
-// runreg "outcome", specification("a")
-// runreg "outcome", specification("b")
-// runreg "outcome", specification("c")
-// runreg "welfare1", specification("a")
-// runreg "welfare1", specification("b")
-// runreg "welfare1", specification("c")
-// runreg "welfare2", specification("a")
-// runreg "welfare2", specification("b")
-// runreg "welfare2", specification("c")
-// runreg "abortion", specification("a")
-// runreg "abortion", specification("b")
-// runreg "abortion", specification("c")
-// runreg "index", specification("a")
-// runreg "index", specification("b")
-// runreg "index", specification("c")
+runreg "policies", specification("a")
+runreg "policies", specification("b")
+runreg "policies", specification("c")
+runreg "outcome", specification("a")
+runreg "outcome", specification("b")
+runreg "outcome", specification("c")
+runreg "welfare1", specification("a")
+runreg "welfare1", specification("b")
+runreg "welfare1", specification("c")
+runreg "welfare2", specification("a")
+runreg "welfare2", specification("b")
+runreg "welfare2", specification("c")
+runreg "abortion", specification("a")
+runreg "abortion", specification("b")
+runreg "abortion", specification("c")
+runreg "index", specification("a")
+runreg "index", specification("b")
+runreg "index", specification("c")
 
 
 
@@ -267,12 +267,12 @@ local i = `i' + 1
 
 end
 
-// bptest "policies"
-// bptest "outcome"
-// bptest "welfare1"
-// bptest "welfare2"
-// bptest "abortion"
-// bptest "index"
+bptest "policies"
+bptest "outcome"
+bptest "welfare1"
+bptest "welfare2"
+bptest "abortion"
+bptest "index"
 
 
 *** POWER ***
