@@ -1,5 +1,4 @@
 build/raw
-build/data
 *.sconsign.dblite
 *.pyc
 *.lyx~
