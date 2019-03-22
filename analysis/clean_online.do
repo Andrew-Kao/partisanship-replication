@@ -278,6 +278,7 @@ bptest "index"
 *** POWER ***
 * incarceration rates
 power onemean 0 -12, sd(178.6) alpha(.1)
+* post-tax income
 power onemean 0 .012, sd(.1483) alpha(.1)
 
 
