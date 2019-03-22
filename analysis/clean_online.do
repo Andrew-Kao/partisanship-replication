@@ -56,9 +56,9 @@ label var all_rep "Republican Governer and Legislature"
 label var dem_voteshare "Voteshare Received by Democratic Candidate"
 label var prscore "Poole-Rosenthal Score of Congressional Reps"
 label var lnpop "Log Population"
-label var pop15 "Percent Population under 15"
-label var pop65 "Percent Population over 65"
-label var black "Percent Population Black"
+label var pop15 "Log Population under 15"
+label var pop65 "Log Population over 65"
+label var black "Log Population Black"
 label var stax_topr "Top Income Tax Rate"
 label var stax_corpr "Top Corporate Tax Rate"
 label var redist "Tax Redistribution Index"
@@ -287,25 +287,46 @@ power onemean 0 .012, sd(.1483) alpha(.1)
 reg abortions gov_dem i.stfips i.year, r cluster(stfips)
 est sto m1
 reg abortions gov_dem lnpop pop15 pop65 black i.stfips i.year, r cluster(stfips)
+est sto m2
 reg abortions gov_dem leg_dem leg_rep lnpop pop15 pop65 black i.stfips i.year, r cluster(stfips)
+est sto m3
 reg abortions gov_dem leg_dem leg_rep lnpop pop15 pop65 black prscore i.stfips i.year, r cluster(stfips)
+est sto m4
 reg abortions gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 black i.stfips i.year if dem_voteshare<=.8 & dem_voteshare>=.2, r cluster(stfips)
+est sto m5
 
-
-esttab m1 m2 m3 m4 m5 using "Tables/revision_exp2_yes_weighted.tex", replace label f b(a4)    p star(* 0.10 ** 0.05 *** 0.01)  cells(b(star fmt(0)) se(par([ ]) fmt(0))) /// p(par fmt(3)))    /// 
-stats(N r2, fmt(0 4) labels ("N" "R-Squared"))	 alignment (S S) coeflabels(_cons "Baseline") keep(abortions `regvars' _cons)  ///
- collabels(none) brackets nomtitles nogap  booktabs 
+esttab m1 m2 m3 m4 m5 using "$dir/output/tables/abortion_a.tex", replace label f b(a4)    p star(* 0.10 ** 0.05 *** 0.01)  cells(b(star fmt(0)) se(par(( )) fmt(0))) /// p(par fmt(3)))    /// 
+stats(N r2, fmt(0 3) labels ("N" "R-Squared")) alignment (S S) keep(gov_dem leg_dem dem_voteshare prscore lnpop pop15 pop65 black `regvars')  ///
+  nomtitles nogap  booktabs  //collabels(none)
 
 
 reg abortions gov_dem i.stfips i.year if termyear~=1, r cluster(stfips)
+est sto m1
 reg abortions gov_dem lnpop pop15 pop65 black i.stfips i.year if termyear~=1, r cluster(stfips)
+est sto m2
 reg abortions gov_dem leg_dem leg_rep lnpop pop15 pop65 black i.stfips i.year if termyear~=1, r cluster(stfips)
+est sto m3
 reg abortions gov_dem leg_dem leg_rep lnpop pop15 pop65 black prscore i.stfips i.year if termyear~=1, r cluster(stfips)
+est sto m4
 reg abortions gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 black i.stfips i.year if termyear~=1 & dem_voteshare<=.8 & dem_voteshare>=.2, r cluster(stfips)
+est sto m5
 
+esttab m1 m2 m3 m4 m5 using "$dir/output/tables/abortion_b.tex", replace label f b(a4)    p star(* 0.10 ** 0.05 *** 0.01)  cells(b(star fmt(0)) se(par(( )) fmt(0))) /// p(par fmt(3)))    /// 
+stats(N r2, fmt(0 3) labels ("N" "R-Squared")) alignment (S S) keep(gov_dem leg_dem dem_voteshare prscore lnpop pop15 pop65 black `regvars')  ///
+  nomtitles nogap  booktabs  //collabels(none)
+  
 
 reg abortions gov_dem i.stfips i.year if termyear~=1 & dem_voteshare<=.8 & dem_voteshare>=.2, r cluster(stfips)
+est sto m1
 reg abortions gov_dem i.stfips i.year if termyear~=1 & dem_voteshare<=.55 & dem_voteshare>=.45, r cluster(stfips)
+est sto m2
 reg abortions gov_dem i.stfips i.year if termyear~=1 & dem_voteshare<=.51 & dem_voteshare>=.49, r cluster(stfips)
+est sto m3
 reg abortions gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 black i.stfips i.year if termyear~=1 & dem_voteshare<=.55 & dem_voteshare>=.45, r cluster(stfips)
+est sto m4
 reg abortions gov_dem leg_dem leg_rep dem_voteshare prscore lnpop pop15 pop65 black i.stfips i.year if termyear~=1 & dem_voteshare<=.51 & dem_voteshare>=.49, r cluster(stfips)
+est sto m5
+
+esttab m1 m2 m3 m4 m5 using "$dir/output/tables/abortion_c.tex", replace label f b(a4)    p star(* 0.10 ** 0.05 *** 0.01)  cells(b(star fmt(0)) se(par(( )) fmt(0))) /// p(par fmt(3)))    /// 
+stats(N r2, fmt(0 3) labels ("N" "R-Squared")) alignment (S S) keep(gov_dem leg_dem dem_voteshare prscore lnpop pop15 pop65 black `regvars')  ///
+  nomtitles nogap  booktabs  //collabels(none)

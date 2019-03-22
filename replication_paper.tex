@@ -257,15 +257,32 @@ It may also be the case that the regression discontinuity fails to be significan
 
 \subsection{Abortion}
 
+In line with the prior findings, we cannot claim with confidence that governors are ideological when it comes to the number of official abortions that occur in their state as well. The point estimates fairly consistently match common in sign intuition (there are more abortions under Democratic Governors), in a range around 700 - 1000 for the simple OLS, but when compared to a mean of 20,000, this does not register as a statistically significant change.
 
+These coefficients grow even further under the regression discontinuity specifications, but power issues prove to be a major constraint once more, making the results potentially promising but ultimately still inconclusive. In sum, the abortion regressions largely confirm the prior results - even if there are sometimes large effects associated with Democratic governors, it is rarely possible to reject the null. 
+ 
 \subsection{Index}
 
 All three indices have partisan leanings commonly associated with them - Democrats are seen as more willing to provide social services, Republicans are seen as being tougher on crime, and Democrats tend to be more supportive of larger governments. 
 
-However, in line with the results discussed above, the effect of a Democratic governor on these indices are almost never statistically significant (the one exception is the heavily underpowered 2\% regression discontinuity approach without any controls). 
+However, matching the results discussed above, the effect of a Democratic governor on these indices are almost never statistically significant. This holds across both the simple OLS and the regression discontinuity specifications (the one exception is the heavily underpowered 2\% regression discontinuity approach without any controls). It would be fair to say that, after looking at a variety of specifications, that Democratic governors do not appear to be ideological along any of the dimensions identified. 
+
+This is a somewhat surprising result, given the conception in popular culture of the differences between political parties, and the amount  of money and effort invested into gubernatorial elections. 
 
 
 \section{Conclusion}
+
+The largest conclusion from this paper is that the party in power of the governorship does not appear to significantly affect policy outcomes - this holds across a variety of measures ranging from government benefits provided to crime rates to tax rates; the one consistent exception to this finding is the amount of post-tax inequality in the state as measured by the Gini coefficient, where Democrats tend to substantially reduce inequality by at least .30 points. 
+
+Though some other results are sometimes significant in the simple OLS stage, such as with Democrats presiding over states with lower incarceration rates and higher post-tax incomes, once the problem of reverse causality and spillovers from prior governors are accounted for, these results no longer hold true. One major caveat, however, is that the regression discontinuity is quite underpowered, such that the original OLS effect sizes cannot be detected as statistically significant. 
+
+A similar story holds true for the alternative measures explored in extension to the original paper. The official number of abortions in a state, which acts as a closer proxy for ideology than the outcomes in the original paper, cannot be statistically distinguished between Republican and Democratic governors. The same holds true with the indices developed to combat the problem of multiple hypotheses testing - that they capture a wide amount of the variance in the underlying outcome data and still do not show significant results is telling of the similarities between the two parties in governance. Nonetheless, the same caveat regarding power still holds true in the regression discontinuity data, which is disappointing considering that it is more credibly able to tell a causal story.
+
+To address the power problem, future work might be able to extend on this by extending the sample further - introducing elections up until the modern day will likely not make enough of a difference such that the regression discontinuities will be properly powered, but turning to more local elections (such as a mayoral one) could be beneficial. A similar extension would be to extend the analysis to other liberal democracies in developed nations that are dominated by two parties (liberal/conservative), and seeing if the same results hold there.
+
+One flaw with the approach taken in this paper is that it assumes that party positions/ideologies remain constant over time, and that governors of a certain party are concerned with the same policy outcomes over time. It is easy to imagine why this may not be true - where Republicans once stood for small government, this is far less true in the status quo. A more sophisticated approach that could be considered might involve first, confirming that governors of different parties campaign differently and prioritize different issues (or take opposite stances on the same issues), and second, showing whether they actually lead to different outcomes linked to these issues under different parties.
+
+In sum, there are two ways to interpret the results of this paper. The first is to conclude that, across a great deal of outcomes, Democrats and Republicans fundamentally value and hence enact similar policies. The second is to say that these differences still exist, but that the mechanism by which they are enacted more often occurs through the legislative and judicial branches at the local level, rather than the governorship - or that national-level policies simply have a much larger impact. 
 
 
 %%%%%%%%   APPENDIX    %%%%%%%%%%
@@ -375,7 +392,7 @@ However, in line with the results discussed above, the effect of a Democratic go
 
 \begin{table}[!hbtp]
 \caption{Effect of Democratic Governor on Abortion}
-\input{output/tables/abortion_a}
+\estwide{output/tables/abortion_a}{5}{c}
 \textbf{Note:} Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
 \label{table:abortion_a}
 \end{table}
@@ -420,7 +437,7 @@ However, in line with the results discussed above, the effect of a Democratic go
 
 \begin{table}[!hbtp]
 \caption{Effect of Democratic Governor on Abortion - Omit First Year}
-\input{output/tables/abortion_b}
+\estwide{output/tables/abortion_b}{5}{c}
 \textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Column 5 is the regression discontinuity (margin of victory $<$ 60\%). Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Columns 2 - 5 include demographic controls, columns 3 - 5 include controls for local legislature partisanship, and columns 4 - 5 include controls for state representatives in Congress. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
 \label{table:abortion_b}
 \end{table}
@@ -464,7 +481,7 @@ However, in line with the results discussed above, the effect of a Democratic go
 
 \begin{table}[!hbtp]
 \caption{Effect of Democratic Governor on Abortion - Regression Discontinuity}
-\input{output/tables/abortion_c}
+\estwide{output/tables/abortion_c}{5}{c}
 \textbf{Note:} The first year of each governor's term is dropped. Coefficients for the Democratic governor indicator variable listed with robust standard errors in parenthesis. Columns 1 - 5 include state and year fixed effects \& cluster errors by state level. Column 1 is the regression discontinuity with margin of victory $<$ 60\%, columns 2 and 4 is the RD with margin $<$ 10\%, and columns 3 and 5 the RD with margin $<$ 2\%. Columns 4 and 5 add demographic factors, local legislature partisanship, and state representatives in Congress as controls. *, **, and *** indicate significance at the 10\%, 5\%, and 1\% significance levels, respectively.
 \label{table:abortion_c}
 \end{table}
